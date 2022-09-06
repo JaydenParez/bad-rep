@@ -1,3 +1,26 @@
+assert(Drawing, "missing dependency: drawing");
+
+-- services
+local run_service = game:GetService("RunService");
+local players = game:GetService("Players");
+local workspace = game:GetService("Workspace");
+
+-- variables
+local camera = workspace.CurrentCamera;
+local get_pivot = workspace.GetPivot;
+local wtvp = camera.WorldToViewportPoint;
+local viewport_size = camera.ViewportSize;
+local localplayer = players.LocalPlayer;
+local cache = table.create(players.MaxPlayers);
+
+-- locals
+local new_drawing = Drawing.new;
+local new_vector2 = Vector2.new;
+local new_color3 = Color3.new;
+local rad = math.rad;
+local tan = math.tan;
+local floor = math.floor;
+
 local function create_esp(player)
     local esp = {};
 
