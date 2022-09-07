@@ -48,11 +48,20 @@ local function create_esp(player)
     esp.distance.Size = 14;
     esp.distance.Center = true;
 
-    esp.health = new_drawing("Text", true);
-    esp.health.Color = new_color3(1, 1, 1);
-    esp.health.Size = 14;
-    esp.health.Center = true;
+    esp.healthText = new_drawing("Text", true);
+    esp.healthText.Color = new_color3(1, 1, 1);
+    esp.healthText.Size = 14;
+    esp.healthText.Center = true;
     
+    esp.healthOutline = new_drawing("Square", true);
+    esp.healthOutline.Color = new_color3(0, 0, 0);
+    esp.healthOutline.Thickness = 0.3;
+    esp.healthOutline.Filled = false;
+
+    esp.health = new_drawing("Square", true);
+    esp.health.Color = new_color3(0, 1, 0);
+    esp.health.Thickness = 0.1;
+    esp.health.Filled = false;
 
     cache[player] = esp;
 end
@@ -77,6 +86,8 @@ local function update_esp()
             esp.tracer.Visible = visible;
             esp.name.Visible = visible;
             esp.distance.Visible = visible;
+            esp.healthText.Visible = visible;
+            esp.healthOutline.Visible = visible;
             esp.health.Visible = visible;
 
             if visible then
@@ -100,8 +111,14 @@ local function update_esp()
                 esp.distance.Text = floor(position.Z) .. " studs";
                 esp.distance.Position = new_vector2(x, floor(y + height * 0.6));
 
-                esp.health.Text = floor(character.Humanoid.Health) .. " HP";
-                esp.health.Position = new_vector2(x, floor(y + height * 0.9));
+                esp.healthText.Text = floor(character.Humanoid.Health) .. " HP";
+                esp.healthText.Position = new_vector2(x, floor(y + height * 0.9));
+
+                esp.healthOutline.Size = Vector2.new(2,height)
+                esp.healthOutline.Position = Vector2.new(position.X - esp.boxOutline.Size.X / 2,position.Y - esp.boxOutline.Size.Y / 2) + Vector2.new(-3,0)
+
+                esp.health.Size = Vector2.new(1,-(esp.healthOutline.Size.Y - 2) * (character.Humanoid.Health / 100))
+                esp.health.Position = esp.healthOutline.Position + Vector2.new(1, -1 + esp.healthOutline.Size.Y)
             end
         else
             esp.boxOutline.Visible = false;
@@ -109,6 +126,8 @@ local function update_esp()
             esp.tracer.Visible = false;
             esp.name.Visible = false;
             esp.distance.Visible = false;
+            esp.healthText.Visible = false;
+            esp.healthOutline.Visible = false;
             esp.health.Visible = false;
         end
     end
